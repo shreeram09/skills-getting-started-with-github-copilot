@@ -165,6 +165,34 @@ footer {
   font-size: 15px;
 }
 
+.participants-list.no-bullets {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.participant-email {
+  flex: 1;
+}
+
+.delete-icon {
+  color: #c62828;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.delete-icon:hover {
+  color: #a31515;
+}
+
 .no-participants {
   color: #888;
   font-style: italic;
