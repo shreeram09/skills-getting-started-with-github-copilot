@@ -1,10 +1,11 @@
-from fastapi import FastAPI
-import os
 from pathlib import Path
+
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+
 from mergington.adapters.inmemory_repository import InMemoryActivityRepository
-from mergington.domain.models import Activity
 from mergington.api import router as activities_router
+from mergington.domain.models import Activity
 from mergington.logging_config import configure_logging
 
 

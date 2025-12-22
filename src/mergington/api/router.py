@@ -1,8 +1,10 @@
-from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Dict
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+
+from mergington.domain.exceptions import ActivityFull, ActivityNotFound, AlreadySignedUp
 from mergington.ports.activity_repository import ActivityRepository
 from mergington.usecases.signup import SignupService
-from mergington.domain.exceptions import ActivityNotFound, AlreadySignedUp, ActivityFull
 
 router = APIRouter()
 
@@ -19,7 +21,9 @@ def get_repo_dep() -> ActivityRepository:
 
 
 @router.get("/activities")
-def list_activities(repo: ActivityRepository = Depends(get_repo_dep)) -> Dict[str, dict]:
+def list_activities(
+    repo: ActivityRepository = Depends(get_repo_dep),
+) -> Dict[str, dict]:
     activities = repo.list_activities()
     return {
         name: {
@@ -33,8 +37,11 @@ def list_activities(repo: ActivityRepository = Depends(get_repo_dep)) -> Dict[st
 
 
 @router.post("/activities/{activity_name}/signup")
-def signup(activity_name: str, email: str = Query(..., description="Student email"),
-           repo: ActivityRepository = Depends(get_repo_dep)):
+def signup(
+    activity_name: str,
+    email: str = Query(..., description="Student email"),
+    repo: ActivityRepository = Depends(get_repo_dep),
+):
     service = SignupService(repo)
     try:
         service.signup(activity_name, email)

@@ -1,7 +1,8 @@
-from typing import Dict
 from threading import Lock
-from mergington.ports.activity_repository import ActivityRepository
+from typing import Dict
+
 from mergington.domain.models import Activity
+from mergington.ports.activity_repository import ActivityRepository
 
 
 class InMemoryActivityRepository(ActivityRepository):

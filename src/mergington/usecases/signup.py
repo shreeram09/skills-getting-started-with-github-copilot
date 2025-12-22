@@ -1,5 +1,5 @@
+from mergington.domain.exceptions import ActivityFull, ActivityNotFound, AlreadySignedUp
 from mergington.ports.activity_repository import ActivityRepository
-from mergington.domain.exceptions import ActivityNotFound, AlreadySignedUp, ActivityFull
 
 
 class SignupService:
