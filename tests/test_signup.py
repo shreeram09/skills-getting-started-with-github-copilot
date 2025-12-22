@@ -12,11 +12,14 @@ def test_signup_new_student():
     assert "Chess Club" in data
 
     email = "newstudent@mergington.edu"
-    resp = client.post(f"/activities/Chess Club/signup?email={email}")
+    activity_name = "Chess Club"
+
+    # Use params to avoid issues with spaces in URL paths
+    resp = client.post(f"/activities/{activity_name}/signup", params={"email": email})
     assert resp.status_code == 200
     assert "Signed up" in resp.json()["message"]
 
     # signing up again should fail
-    resp = client.post(f"/activities/Chess Club/signup?email={email}")
+    resp = client.post(f"/activities/{activity_name}/signup", params={"email": email})
     assert resp.status_code == 400
     assert resp.json()["detail"] == "Student already signed up"

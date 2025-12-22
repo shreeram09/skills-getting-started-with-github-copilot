@@ -5,11 +5,10 @@ from fastapi.staticfiles import StaticFiles
 from mergington.adapters.inmemory_repository import InMemoryActivityRepository
 from mergington.domain.models import Activity
 from mergington.api import router as activities_router
-from mergington.api.router import get_repo_dep
 from mergington.logging_config import configure_logging
 
 
-def create_initial_activities() -> dict:
+def create_initial_activities() -> dict[str, Activity]:
     return {
         "Chess Club": Activity(
             name="Chess Club",
@@ -83,19 +82,14 @@ def create_app() -> FastAPI:
         title="Mergington High School API",
         description="API for viewing and signing up for extracurricular activities",
     )
-    # Mount static directory from src/static (keeps compatibility with original layout)
-    app.mount(
-        "/static",
-        StaticFiles(directory=os.path.join(Path(__file__).parent, "static")),
-        name="static",
-    )
+
+    # Mount static directory from src/static (only if exists).
+    static_dir = Path(__file__).parent / "static"
+    if static_dir.exists():
+        app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
     # Wire the in-memory repository as the default adapter
     repo = InMemoryActivityRepository(initial=create_initial_activities())
-
-    # Simple dependency override for the router module
-    def _get_repo():
-        return repo
 
     # Wire the repository into the router by setting its module-level DEFAULT_REPO
     # value. The router's `get_repo_dep` will read this variable at runtime.
