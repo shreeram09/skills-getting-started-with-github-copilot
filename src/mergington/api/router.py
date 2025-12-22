@@ -6,9 +6,16 @@ from mergington.domain.exceptions import ActivityNotFound, AlreadySignedUp, Acti
 
 router = APIRouter()
 
-# Placeholder dependency to be overridden by application wiring (main.create_app)
+# The router will call `get_repo_dep()` to obtain the repository instance.
+# `DEFAULT_REPO` is intended to be set by application wiring (e.g. in
+# `src.main.create_app`) so the dependency can return a concrete adapter.
+DEFAULT_REPO: ActivityRepository | None = None
+
+
 def get_repo_dep() -> ActivityRepository:
-    raise RuntimeError("Repository dependency not wired")
+    if DEFAULT_REPO is None:
+        raise RuntimeError("Repository dependency not wired")
+    return DEFAULT_REPO
 
 
 @router.get("/activities")
