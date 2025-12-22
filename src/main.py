@@ -97,7 +97,9 @@ def create_app() -> FastAPI:
     def _get_repo():
         return repo
 
+    # Ensure the router uses our repo via FastAPI's dependency_overrides
     activities_router.get_repo_dep = _get_repo
+    app.dependency_overrides[activities_router.get_repo_dep] = _get_repo
     app.include_router(activities_router.router)
     return app
 
