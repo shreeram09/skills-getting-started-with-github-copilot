@@ -2,6 +2,7 @@ fastapi
 uvicorn[standard]
 pytest
 httpx
+requests
 black
 isort
 flake8
